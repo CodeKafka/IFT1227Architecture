@@ -1,0 +1,671 @@
+\documentclass{report}
+\input{preamble.tex}
+\usepackage[scr]{rsfso}
+\usetikzlibrary{circuits.ee.IEC}
+
+\newcommand{\faketarget}{\oplus\!\!\!\!\odot}
+\newcommand{\target}{%
+  \begin{tikzpicture}[scale=0.5]
+    \fill[black] (0,0) circle (0.1);
+    \draw (0,0) circle (0.2);
+    \draw (0,0) circle (0.3);
+  \end{tikzpicture}%
+}
+
+\usepackage[clock]{ifsym}
+\usepackage[utopia]{mathdesign}
+
+
+\title{\Huge{Architecture des ordinateurs}\\{IFT1227}\\{\textbf{Introduction}}}
+\author{\huge{Franz Girardin}}
+\date{\today}
+\lstset{inputencoding=utf8/latin1}
+
+            %%%%%%%%%%%%%%%%%  Sect.                          %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{helvet}
+\titleformat{\chapter}
+  {\fontfamily{phv}\bfseries\huge} % format
+  {}                % label
+  {0pt}             % sep
+  {\color{myb}\huge}           % before-code
+
+
+
+\titleformat{\section}
+  {\normalfont\scshape}{\thesection}{1em}{}
+\usepackage{circuitikz}
+
+
+% Customizing the spacing for the chapter titles
+\titlespacing*{\chapter}{0pt}{0pt}{20pt}
+
+% Allow hfill in math environment
+\newcommand{\specialcell}[1]{\ifmeasuring@#1\else\omit$\displaystyle#1$\ignorespaces\fi}
+
+% Allow you to do the non implication (implication barred)
+\newcommand{\notimplies}{%
+  \mathrel{{\ooalign{\hidewidth$\not\phantom{=}$\hidewidth\cr$\implies$}}}}
+
+
+
+\DeclareRobustCommand{\looongrightarrow}{%
+  \DOTSB\relbar\joinrel\relbar\joinrel\relbar\joinrel\rightarrow
+}
+
+
+
+% Define the command for the NOT gate
+\newcommand{\notgate}{%
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw
+        (0,0) node[not port] (mynot) {}
+        (mynot.in) -- ++(-0.5,0) node[left] {A}
+        (mynot.out) -- ++(0.5,0) node[right] {Y};
+    \end{circuitikz}
+}
+
+
+\newcommand{\bufgate}{%
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw
+        (0,0) node[buffer port] (mynot) {}
+        (mynot.in) -- ++(-0.5,0) node[left] {A}
+        (mynot.out) -- ++(0.5,0) node[right] {Y};
+    \end{circuitikz}
+}
+
+
+
+\newcommand{\andgate}{%
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw
+        (0,0) node[and port] (myand) {}
+        (myand.in 1) -- ++(-0.5,0) node[left] {A}
+        (myand.in 2) -- ++(-0.5,0) node[left] {B}
+        (myand.out) -- ++(0.5,0) node[right] {Y};
+    \end{circuitikz}
+}
+
+
+% Define the command for the OR gate
+\newcommand{\orgate}{%
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw
+        (0,0) node[or port] (myor) {}
+        (myor.in 1) -- ++(-0.5,0) node[left] {A}
+        (myor.in 2) -- ++(-0.5,0) node[left] {B}
+        (myor.out) -- ++(0.5,0) node[right] {Y};
+    \end{circuitikz}
+}
+
+
+% Define the command for the XOR gate
+\newcommand{\xorgate}{%
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw
+        (0,0) node[xor port] (myxor) {}
+        (myxor.in 1) -- ++(-0.5,0) node[left] {A}
+        (myxor.in 2) -- ++(-0.5,0) node[left] {B}
+        (myxor.out) -- ++(0.5,0) node[right] {Y};
+    \end{circuitikz}
+}
+
+% Define the command for the NOR gate
+\newcommand{\norgate}{%
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw
+        (0,0) node[nor port] (mynor) {}
+        (mynor.in 1) -- ++(-0.5,0) node[left] {A}
+        (mynor.in 2) -- ++(-0.5,0) node[left] {B}
+        (mynor.out) -- ++(0.5,0) node[right] {Y};
+    \end{circuitikz}
+}
+
+% Define the command for the NAND gate
+\newcommand{\nandgate}{%
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw
+        (0,0) node[nand port] (mynand) {}
+        (mynand.in 1) -- ++(-0.5,0) node[left] {A}
+        (mynand.in 2) -- ++(-0.5,0) node[left] {B}
+        (mynand.out) -- ++(0.5,0) node[right] {Y};
+    \end{circuitikz}
+}
+
+% Define the command for the XNOR gate
+\newcommand{\xnorgate}{%
+\begin{circuitikz}[scale=0.8, transform shape]
+\draw
+(0,0) node[xnor port] (myxnor) {}
+(myxnor.in 1) -- ++(-0.5,0) node[left] {A}
+(myxnor.in 2) -- ++(-0.5,0) node[left] {B}
+(myxnor.out) -- ++(0.5,0) node[right] {Y};
+\end{circuitikz}
+}
+
+
+% Define the command for the 3-input NOR gate
+\newcommand{\northreegate}{%
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw
+        (0,0) node[nor port, number inputs=3] (mynor3) {}
+        (mynor3.in 1) -- ++(-0.5,0) node[left] {A}
+        (mynor3.in 2) -- ++(-0.5,0) node[left] {B}
+        (mynor3.in 3) -- ++(-0.5,0) node[left] {C}
+        (mynor3.out) -- ++(0.5,0) node[right] {Y};
+    \end{circuitikz}
+}
+
+
+% Define the command for the 3-input AND gate
+\newcommand{\andthreegate}{%
+\begin{circuitikz}[scale=0.8, transform shape]
+    \draw
+    (0,0) node[and port, number inputs=3] (myand3) {}
+    (myand3.in 1) -- ++(-0.5,0) node[left] {A}
+    (myand3.in 2) -- ++(-0.5,0) node[left] {B}
+    (myand3.in 3) -- ++(-0.5,0) node[left] {C}
+    (myand3.out) -- ++(0.5,0) node[right] {Y};
+\end{circuitikz}
+
+}
+
+
+
+\begin{document}
+\maketitle
+
+\pagebreak
+
+\pagebreak
+\begin{multicols*}{3}
+
+
+    \footnotesize
+
+
+    \paragraph{Couche logique numérique}  
+    Constituées de \textit{portes logiques} construite à partir 
+    de \textbf{transisteurs} qui prennent un \textbf{signal}
+    \textbf{0} ou \textbf{1} et calcule 
+    une \textbf{fonction logique} 
+    $\mathbb{ET}$, $\mathbb{OU}$ et $\mathbb{NON}$, etc.
+
+    \paragraph{Porte $\mathbb{NON}$}
+    \mbox{}\vspace{1em}\\
+    \begin{minipage}{\columnwidth}
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \notgate
+        \end{minipage}%
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \raisebox{0.3\height}{
+            \renewcommand{\arraystretch}{1.5}
+            \begin{tabular}{c|c}
+                A & Y \\
+                \hline
+                1 & 0 \\
+                0 & 1 \\
+            \end{tabular}
+            }
+        \end{minipage}
+    \end{minipage}
+    \[\entouree{$Y= \overline{A}$} \]
+
+
+    \paragraph{Porte $\mathbb{BUF}$}
+    \mbox{}\vspace{1em}\\
+    \begin{minipage}{\columnwidth}
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \bufgate
+        \end{minipage}%
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \raisebox{0.3\height}{
+            \renewcommand{\arraystretch}{1.5}
+            \begin{tabular}{c|c}
+                A & Y \\
+                \hline
+                0 & 0 \\
+                1 & 1 \\
+            \end{tabular}
+            }
+        \end{minipage}
+    \end{minipage}
+    \[\entouree{$Y= A$} \]
+
+
+
+    \paragraph{Porte $\mathbb{ET}$}
+    \mbox{}\vspace{1em}\\
+    \begin{minipage}{\columnwidth}
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \andgate
+        \end{minipage}%
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \raisebox{-0.3\height}{
+            \renewcommand{\arraystretch}{1.5}
+            \begin{tabular}{c c | c}
+                A & B & Y \\
+                \hline
+                0 & 0 & 0 \\
+                0 & 1 & 1 \\
+                1 & 0 & 1 \\
+                1 & 1 & 1 
+            \end{tabular}
+            }
+        \end{minipage}
+    \end{minipage}
+    \[\entouree{$Y = AB $} \]
+
+
+
+    \paragraph{Porte $\mathbb{OU}$}
+    \mbox{}\vspace{1em}\\
+    \begin{minipage}{\columnwidth}
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \orgate
+        \end{minipage}%
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \raisebox{-0.3\height}{
+            \renewcommand{\arraystretch}{1.5}
+            \begin{tabular}{c c | c}
+                A & B & Y \\
+                \hline
+                0 & 0 & 0 \\
+                0 & 1 & 0 \\
+                1 & 0 & 0 \\
+                1 & 1 & 1 
+            \end{tabular}
+            }
+        \end{minipage}
+    \end{minipage}
+    \[\entouree{$Y = A + B $} \]
+
+
+
+    \paragraph{Porte $\mathbb{XOR}$}
+    \mbox{}\vspace{1em}\\
+    \begin{minipage}{\columnwidth}
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \xorgate
+        \end{minipage}%
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \raisebox{-0.3\height}{
+            \renewcommand{\arraystretch}{1.5}
+            \begin{tabular}{c c | c}
+                A & B & Y \\
+                \hline
+                0 & 0 & 0 \\
+                0 & 1 & 1 \\
+                1 & 0 & 1 \\
+                1 & 1 & 0 
+            \end{tabular}
+            }
+        \end{minipage}
+    \end{minipage}
+    \[\entouree{$Y = A \oplus B$} \]
+    \columnbreak
+
+
+
+    \paragraph{Porte $\mathbb{NAND}$}
+    \mbox{}\vspace{1em}\\
+    \begin{minipage}{\columnwidth}
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \nandgate
+        \end{minipage}%
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \raisebox{-0.3\height}{
+            \renewcommand{\arraystretch}{1.5}
+            \begin{tabular}{c c | c}
+                A & B & Y \\
+                \hline
+                0 & 0 & 1 \\
+                0 & 1 & 1 \\
+                1 & 0 & 1 \\
+                1 & 1 & 0 
+            \end{tabular}
+            }
+        \end{minipage}
+    \end{minipage}
+    \[\entouree{$Y = \overline{AB}$} \]
+
+
+    \paragraph{Porte $\mathbb{NOR}$}
+    \mbox{}\vspace{1em}\\
+    \begin{minipage}{\columnwidth}
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \norgate
+        \end{minipage}%
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \raisebox{-0.3\height}{
+            \renewcommand{\arraystretch}{1.5}
+            \begin{tabular}{c c | c}
+                A & B & Y \\
+                \hline
+                0 & 0 & 1 \\
+                0 & 1 & 0 \\
+                1 & 0 & 0 \\
+                1 & 1 & 0 
+            \end{tabular}
+            }
+        \end{minipage}
+    \end{minipage}
+    \[\entouree{$Y = \overline{A + B}$} \]
+
+
+
+    \paragraph{Porte $\mathbb{XNOR}$}
+    \mbox{}\vspace{1em}\\
+    \begin{minipage}{\columnwidth}
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \xnorgate
+        \end{minipage}%
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \raisebox{-0.3\height}{
+            \renewcommand{\arraystretch}{1.5}
+            \begin{tabular}{c c | c}
+                A & B & Y \\
+                \hline
+                0 & 0 & 1 \\
+                0 & 1 & 0 \\
+                1 & 0 & 0 \\
+                1 & 1 & 1 
+            \end{tabular}
+            }
+        \end{minipage}
+    \end{minipage}
+    \[\entouree{$Y = \overline{A \oplus B}$} \]
+
+
+
+    \paragraph{Porte $\mathbb{NOR}3$}
+    \mbox{}\vspace{1em}\\
+    \begin{minipage}{\columnwidth}
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \northreegate
+        \end{minipage}%
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \raisebox{-0.6\height}{
+            \renewcommand{\arraystretch}{1.5}
+            \begin{tabular}{c c c | c}
+                A & B & C & Y \\
+                \hline
+                0 & 0 & 0 & 1 \\
+                0 & 0 & 1 & 0 \\
+                0 & 1 & 0 & 0 \\
+                0 & 1 & 1 & 0 \\
+                1 & 0 & 0 & 0 \\
+                1 & 0 & 1 & 0 \\
+                1 & 1 & 0 & 0 \\
+                1 & 1 & 1 & 0 
+            \end{tabular}
+            }
+        \end{minipage}
+    \end{minipage}
+    \[\entouree{$Y = \overline{A + B + C}$} \]
+    \columnbreak
+
+
+
+    \paragraph{Porte $\mathbb{AND}3$}
+    \mbox{}\vspace{1em}\\
+    \begin{minipage}{\columnwidth}
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \andthreegate
+        \end{minipage}%
+        \begin{minipage}[b]{0.5\columnwidth}
+            \centering
+            \raisebox{-0.6\height}{
+            \renewcommand{\arraystretch}{1.5}
+            \begin{tabular}{c c c | c}
+                A & B & C & Y \\
+                \hline
+                0 & 0 & 0 & 0 \\
+                0 & 0 & 1 & 0 \\
+                0 & 1 & 0 & 0 \\
+                0 & 1 & 1 & 0 \\
+                1 & 0 & 0 & 0 \\
+                1 & 0 & 1 & 0 \\
+                1 & 1 & 0 & 0 \\
+                1 & 1 & 1 & 1 
+            \end{tabular}
+        }         
+    \end{minipage}
+    \end{minipage}
+    \[\entouree{$Y = ABC$} \]
+
+    \paragraph{Définition de la marge de bruit}
+    Tolérance d'un circuit aux \textbf{perturbations} 
+    pouvant fausser l'interprétation du signal.  
+    \begin{itemize}
+        \item[$\rhd$] $ V_{IH}$ : $\min(V | V_{in}\Coloneqq \textbf{1})$  
+        \item[$\rhd$]  $V_{IL}$ : $\max(V | V_{in}\Coloneqq \textbf{0})$
+        \item[$\blacktriangleright$] Signal reçu \textbf{min} ou \textbf{max} 
+            est être interprété comme \textbf{1}  ou \textbf{0}. 
+        \item[$\rhd$] $ V_{OH}$ : $\min(V | V_{out}\Coloneqq \textbf{1})$  
+        \item[$\rhd$] $V_{OL}$ : $\max(V | V_{out}\Coloneqq \textbf{0})$
+        \item[$\blacktriangleright$] Signal \textbf{min} ou \textbf{max} 
+            que l'émetteur s'engage à fournir pour être interprété 
+            comme \textbf{1}  ou \textbf{0}. 
+    \end{itemize}
+    \begin{align*}
+        NM_H = V_{OH} \; (\textit{ém.}) - V_{IH} \; (src.) \\
+        NM_L = V_{IL} (src.) - V_{OL} (\textit{ém.})
+    \end{align*}
+
+    \begin{figure}[H]
+        \begin{center}
+            \includegraphics[width=0.30\textwidth]{MargeBruit.png}
+        \end{center}
+    \end{figure}
+
+    \paragraph{Transistors}
+    \mbox{}\vspace{1em}\\
+    Éléments de base des circuits électroniques. Ils sont composés de 
+    trois broches; le drain, la source, et la \textbf{grille} qui contrôle 
+    les deux autres comme un interrupteur.  La figure suivante représente 
+    un transistor hors tension \textit{off}, un transistor hors tension 
+    mais polarisé \textit{off} et un transistor sous tension \textit{on}.     
+    \begin{center}
+    \begin{circuitikz}[scale=0.5]
+    % Draw NMOS transistor
+    \draw (0,0) node[nigfete] (mos) {}
+    (mos.gate) node[left] {g}
+    (mos.drain) node[above] {d}
+    (mos.source) node[below] {s};
+
+    % Draw NMOS in OFF state
+    \draw (3,0) node[nigfete] (mosoff) {}
+    (mosoff.gate) node[left] {g}
+    (mosoff.drain) node[above] {d}
+    (mosoff.source) node[below] {s};
+    \draw (mosoff.gate) -- ++(0.5,0) node[circ] {} -- (mosoff.source);
+
+    Draw NMOS in ON state
+    \draw (6,0) node[nigfete] (moson) {}
+    (moson.gate) node[left] {g}
+    (moson.drain) node[above] {d}
+    (moson.source) node[below] {s};
+    \draw (moson.gate) -- ++(0.5,0) node[circ] {} -- (moson.drain);
+    \end{circuitikz}
+    \end{center}
+
+    \paragraph{Composition d'un circuit} 
+    \mbox{}\\ 
+    \textbf{Circuit}$\Coloneqq$ E., S., spec. \textit{fonct}., spec. \textit{temp}.   
+
+    \paragraph{Propriétés d'un circ. combinatoire}
+    \mbox{} 
+    \vspace{0.1em}
+    \begin{itemize}
+        \item[$\rhd$]  \textbf{Noeud} $\implies$ \textit{In}  
+            ou \textbf{connexion à} un \textit{Out}. 
+        \item[$\rhd$] \textbf{Aucun} chemin cyclique.    
+
+    \end{itemize}
+
+
+    \paragraph{Sommes de produits SOP}
+    En considérant les variables \textit{In} d'une ligne de la table de vérité, 
+    il faut identifier la \textbf{conjonction} (produit) nécessaire 
+    pour engendrer un \textbf{1} logique. Un \textbf{minterm} est une 
+    représentation du produit engendrant un 1 logique. 
+
+                \begin{table}[H]
+                  \begin{center}
+                   \renewcommand{\arraystretch}{1.5}
+                    \footnotesize
+                        \begin{tabular}{|l|l|l||c|}
+                        \arrayrulecolor{blue}\hline
+                        \rowcolor{lightBlue}
+                        \textcolor{myb}{$A$} & \textcolor{myb}{$B$} 
+                                           & \textcolor{myb}{$Y$} 
+                                           & \textcolor{myb}{\textit{minterm}}  
+                        \\
+                        \hline
+                        \hline
+                        \arrayrulecolor{black}
+                        $V$ & $F$ & \cellcolor{myr} $0$ & $\overline{AA}$
+                        \\
+                        \hline
+                        $0$ & $1$ & \cellcolor{myg} $1$ & \textcolor{myg}{$\overline{A}B$}
+                        \\
+                        \hline 
+                        $1$ & $0$ & \cellcolor{myr} $0$ & $A\overline{B}$ 
+                        \\ 
+                        \hline
+                        $1$ & $1$ & \cellcolor{myg} $1$ & \textcolor{myg}{$AB$}
+                        \\
+                        \hline
+                        \end{tabular}
+                \end{center}
+                \end{table}
+                \[Y(A, B) = \overline{A}B + AB \leftrightarrow Y(A,B) = \sum (1, 3) \]
+    
+
+    \paragraph{Produits de sommes}
+    En considérant les variables \textit{In} d'une ligne de la table de vérité, 
+    il faut identifier la \textbf{somme} nécessaire 
+    pour engendrer un \textbf{0} logique. Un \textbf{maxterm} est une 
+    représentation de la somme engendrant un 0 logique. 
+
+
+                \begin{table}[H]
+                  \begin{center}
+                   \renewcommand{\arraystretch}{1.5}
+                     \footnotesize
+                        \begin{tabular}{|l|l|l||c|}
+                        \arrayrulecolor{blue}\hline
+                        \rowcolor{lightBlue}
+                        \textcolor{myb}{$A$} & \textcolor{myb}{$B$} 
+                                           & \textcolor{myb}{$Y$} 
+                                           & \textcolor{myb}{\textit{maxterm}}  
+                        \\
+                        \hline
+                        \hline
+                        \arrayrulecolor{black}
+                        $V$ & $F$ & \cellcolor{myg} $0$ & \textcolor{myg}{$A + B$}
+                        \\
+                        \hline
+                        $0$ & $1$ & \cellcolor{myr} $1$ & $A + \overline{B}$
+                        \\
+                        \hline 
+                        $1$ & $0$ & \cellcolor{myg} $0$ & \textcolor{myg}{$\overline{A} + B$} 
+                        \\ 
+                        \hline
+                        $1$ & $1$ & \cellcolor{myr} $1$ & $\overline{A} + \overline{B}$ 
+                        \\
+                        \hline
+                        \end{tabular}
+                \end{center}
+                \end{table}
+                \[Y(A, B) = (A+B)(A + \overline{B}) = \prod (0, 2) \]
+
+
+
+    \begin{table}[H]
+      \centering
+      \renewcommand{\arraystretch}{1.5}
+      \setlength{\arrayrulewidth}{0.4pt}
+      \arrayrulecolor{blue}
+      \footnotesize
+      \begin{tabular}{|l|l|l|}
+        \hline
+        \rowcolor{lightBlue}
+        \textcolor{myb}{Axiome} & \textcolor{myb}{Dual} & \textcolor{myb}{Nom} \\
+        \hline
+        \hline
+        \( B = 0 \) if \( B \neq 1 \) & \( B = 1 \) if \( B \neq 0 \) & Binary field \\
+        \rowcolor{lightBlue}
+        \( \overline{0} = 1 \) & \( \overline{1} = 0 \) & NOT \\
+        \( 0 \cdot 0 = 0 \) & \( 1 + 1 = 1 \) & AND/OR \\
+        \rowcolor{lightBlue}
+        \( 1 \cdot 1 = 1 \) & \( 0 + 0 = 0 \) & AND/OR \\
+        \( 0 \cdot 1 \cdot 0 = 0 \) & \( 1 + 0 = 1 + 1 = 1 \) & AND/OR \\
+        \hline
+        \end{tabular}
+    \end{table}
+
+
+
+    \begin{table}[H]
+      \centering
+      \renewcommand{\arraystretch}{1.5}
+      \setlength{\arrayrulewidth}{0.4pt}
+      \arrayrulecolor{blue}
+      \footnotesize
+      \begin{tabular}{|l|l|l|}
+        \hline
+        \rowcolor{lightBlue}
+        \textcolor{myb}{Théorème} & \textcolor{myb}{Dual} & \textcolor{myb}{Nom} \\
+        \hline
+        \hline
+        $B \cdot 1 = B$ & $B + 0 = B$ & Identité \\
+        \rowcolor{lightBlue}
+        \( B \cdot  0 = 0\) & \( B + 1 = 1 \) & Élément nul \\
+        \( B \cdot B = B \) & \( B + B = B \) & Indépotence \\
+        \rowcolor{lightBlue}
+                            & \( \overline{\overline{B}}  = B\) & Involution \\
+        \( B \cdot \overline{B} = 0 \) & \( B + \overline{B} = 1 \) & Complément \\
+        \hline
+        \end{tabular}
+    \end{table}
+
+
+    \paragraph{De Morgan}
+    \mbox{}\vspace{0.5em}
+    \[ \neg(A + B) = \neg A + \neg B \]
+    \[ \neg(A \cdot B) = \neg A \cdot \neg B \]
+
+
+
+
+
+
+    
+
+
+
+
+
+    \end{multicols*}
+\end{document}
