@@ -15,6 +15,7 @@
 
 \usepackage[clock]{ifsym}
 \usepackage[utopia]{mathdesign}
+\usepackage{karnaugh-map}
 
 
 \title{\Huge{Architecture des ordinateurs}\\{IFT1227}\\{\textbf{Introduction}}}
@@ -963,19 +964,65 @@
     \end{center}
 
 
+    \paragraph{Méthodes de Karnaugh}
+    Méthode \textbf{graphique}   
+    permettant de simplifier les formules de circuits 
+
+    \begin{itemize}
+        \item[$\rhd$]   \textbf{Organiser}  les éléments en grille 
+            de façon à ce que chaque cellule ne diffère d'une 
+            cellule voisine que par \textbf{1 bit}.   
+        \item[$\rhd$] Remplir la grille de façon à refléter le 
+            \textbf{tableau d'origine}.   
+        \item[$\rhd$] \textbf{Grouper} ou entourer les cellules 
+            adjacentes qui possèdent un \textbf{1}.   
+    \end{itemize}   
 
 
+    \begin{table}[H]
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c||c|}
+    \hline
+    \rowcolor{lightBlue}
+    \textcolor{myb}{$A$} & \textcolor{myb}{$B$} 
+                       & \textcolor{myb}{$C$} 
+                       & \textcolor{myb}{$Y$}\\
+    \hline
+    \hline
+    0 & 0 & 0 & \textcolor{blue}{1}   \\ 
+    \rowcolor{lightBlue}
+    0 & 0 & 1 & \textcolor{blue}{1} \\ 
+    \rowcolor{lightBlue}
+    0 & 1 & 0 & 0 \\
+    0 & 1 & 1 & 0 \\
+    \rowcolor{lightBlue}
+    1 & 0 & 0 & 0 \\
+    1 & 0 & 1 & 0 \\
+    \rowcolor{lightBlue}
+    1 & 1 & 0 & 0 \\
+    1 & 1 & 1 & 0 \\
+    \hline
+  \end{tabular}
+\end{table}        
 
 
+    \begin{center}
+        \begin{karnaugh-map}[4][2][1][$B$][$A$][$C$][$$]
+            \minterms{0,4}
+            \autoterms[0] 
+            \implicant{0}{4}
+        \end{karnaugh-map}
+    \end{center}
 
 
-
-
-
-
-
-
-
+    \begin{center}
+        \begin{karnaugh-map}[4][2][1][$B$][$A$][$C$][$$]
+            \terms{0}{$\overline{A}\cdot\overline{B}\cdot\overline{C}$}
+            \terms{4}{$\overline{A}\cdot\overline{B}C$}
+            \autoterms[0]
+        \end{karnaugh-map}
+    \end{center}
 
 
 
@@ -988,5 +1035,14 @@
 
 
 
+    \paragraph{Multiplexeur}
+    \begin{itemize}
+        \item[$\rhd$]  $2^n$ lignes d'entrées 
+        \item[$\rhd$]  $2^n$ N lignes de sélections 
+        \item[$\rhd$]  $2^n$ Une seule sorties $Y$  
+    \end{itemize}
+    Possède deux implémentations secondaires, soit (1) \textbf{portes logiques}
+    et (2) \textbf{tampons} à trois états. 
     \end{multicols*}
+
 \end{document}
