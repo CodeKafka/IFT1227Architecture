@@ -14,7 +14,6 @@
 }
 
 \usepackage[clock]{ifsym}
-\usepackage[utopia]{mathdesign}
 \usepackage{karnaugh-map}
 
 
@@ -609,20 +608,20 @@
       \renewcommand{\arraystretch}{1.5}
       \setlength{\arrayrulewidth}{0.4pt}
       \arrayrulecolor{blue}
-      \footnotesize
+      \scriptsize
       \begin{tabular}{|l|l|l|}
         \hline
         \rowcolor{lightBlue}
         \textcolor{myb}{Axiome} & \textcolor{myb}{Dual} & \textcolor{myb}{Nom} \\
         \hline
         \hline
-        \( B = 0 \) if \( B \neq 1 \) & \( B = 1 \) if \( B \neq 0 \) & Binary field \\
+        \( B = 0 \) if \( B \neq 1 \) & \( B = 1 \) if \( B \neq 0 \) & Bin. field \\
         \rowcolor{lightBlue}
         \( \overline{0} = 1 \) & \( \overline{1} = 0 \) & NOT \\
         \( 0 \cdot 0 = 0 \) & \( 1 + 1 = 1 \) & AND/OR \\
         \rowcolor{lightBlue}
         \( 1 \cdot 1 = 1 \) & \( 0 + 0 = 0 \) & AND/OR \\
-        \( 0 \cdot 1 \cdot 0 = 0 \) & \( 1 + 0 = 1 + 1 = 1 \) & AND/OR \\
+        \( 0 \cdot 1 \cdot 0 = 0 \) & \( 1 + 0 = 1 + 1 \) & AND/OR \\
         \hline
         \end{tabular}
     \end{table}
@@ -768,7 +767,7 @@
     % Wires crossing without connecting
     \draw (0,-4) -- ++(2,0);
     \draw (1,-3.5) -- (1,-4.5);
-    \node[below] at (0.75,-5) {(c) Fils se croissant sans point (\;$\therefore$ non connectés)};
+    \node[below] at (0.75,-5) {(c) Fils croisés sans point (\;$\therefore$ non connectés)};
 
 \end{tikzpicture}    
 \end{center}
@@ -782,7 +781,7 @@
  \begin{tikzpicture}[scale=0.55]
     % Draw the box for the priority circuit
     \draw (0,0) rectangle (4,5);
-    \node at (2,2.5) {\textit{Circuit de priorité}};
+    \node at (2,2.5) {\textit{Priorité}};
 
     % Draw the input lines and labels
     \draw (-1,4.5) -- (0,4.5) node[midway, above] {\(A_3\)};
@@ -887,8 +886,7 @@
 \end{tikzpicture}
 
 
-
-    \paragraph{Entrés \textit{don't care} \textit{d} ou $\mathbb{X}$}
+\paragraph{Entrée don't care ou $\mathbb{X}$}
     Ces entrés sont utilisées pour spécifier que la variables possédant le 
     \textit{don't care} n'affecte pas le résultat de la fonction logique.   
     Une file de priorité peut être résumée par la table suivante. 
@@ -942,7 +940,7 @@
 
 
 
-    \paragraph{Tampon à trois étal : signal $\mathbb{Z}$}
+    \paragraph{Tampon à trois états : signal $\mathbb{Z}$}
     Circuit dans lequel une entrée $\mathbb{E}$ est connecté à une porte tampon et contrôle 
     la \textbf{propagation du signal}. Lorsque l'entrée $\mathbb{E}$ est 
     sous tension haute, la porte agit comme un tampon normal; lorsque l'entrée 
@@ -1018,23 +1016,274 @@
 
     \begin{center}
         \begin{karnaugh-map}[4][2][1][$B$][$A$][$C$][$$]
-            \terms{0}{$\overline{A}\cdot\overline{B}\cdot\overline{C}$}
-            \terms{4}{$\overline{A}\cdot\overline{B}C$}
+          \terms{0}{\tiny{$\overline{A}\cdot\overline{B}\cdot\overline{C}$}}
+            \terms{4}{\tiny{$\overline{A}\cdot\overline{B}C$}}
             \autoterms[0]
         \end{karnaugh-map}
     \end{center}
+    \textbf{Solution} : considérer les variables qui ne changent pas 
+    leurs valeurs entre les cases \textbf{groupés}. Ici, la variable 
+    $C$ change de valeur entre le cellule 1 et la cellule 2; 
+    elle n'est donc pas considérée dans \textbf{l'équation simplifiée}. 
+    Nous avons alors :
+    \[Y = \overline{A}\overline{B} \]
+
+    \paragraph{Autre exemple de Karnaugh-map de 3 entrées}
+    Parfois, il y a plusieurs \textbf{implicants}. 
+    \begin{table}[H]
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c||c|}
+    \hline
+    \rowcolor{lightBlue}
+    \textcolor{myb}{$A$} & \textcolor{myb}{$B$} 
+                       & \textcolor{myb}{$C$} 
+                       & \textcolor{myb}{$Y$}\\
+    \hline
+    \hline
+    0 & 0 & 0 & 0 \\ 
+    \rowcolor{lightBlue}
+    0 & 0 & 1 & 0 \\ 
+    \rowcolor{lightBlue}
+    0 & 1 & 0 & \textcolor{blue}{1} \\
+    0 & 1 & 1 & \textcolor{blue}{1} \\
+    \rowcolor{lightBlue}
+    1 & 0 & 0 & 0 \\
+    1 & 0 & 1 & 0 \\
+    \rowcolor{lightBlue}
+    1 & 1 & 0 & \textcolor{blue}{1} \\
+    1 & 1 & 1 & 0 \\
+    \hline
+  \end{tabular}
+\end{table}        
+
+
+    \begin{center}
+      \tiny
+        \begin{karnaugh-map}[4][2][1][$B$][$A$][$C$][$$]
+            \minterms{1,3,5}
+            \autoterms[0] 
+            \implicant{1}{3}
+            \implicant{1}{5}
+        \end{karnaugh-map}
+    \end{center}
+    \[ Y = \overline{A}B + B\overline{C} \] 
+
+
+     \paragraph{Autre exemple de Karnaugh-map de 3 entrées}
+     Pour les tables de Karnaugh à 4 entrées et plus, les implicants 
+     devinnent plus complexes. 
+
+  \begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.15}
+    \setlength{\arrayrulewidth}{0.4pt}
+    \arrayrulecolor{blue}
+    \scriptsize
+    \begin{tabular}{|c|c|c|c||c|}
+      \hline
+      \rowcolor{lightBlue}
+      \textcolor{myb}{$A$} & \textcolor{myb}{$B$} & \textcolor{myb}{$C$} & \textcolor{myb}{$D$} & \textcolor{myb}{$Y$} 
+      \\ \hline
+      0 & 0 & 0 & 0 & \textcolor{blue}{1} \\
+      \rowcolor{lightBlue}
+      0 & 0 & 0 & 1 & 0 \\
+      0 & 0 & 1 & 0 &  \textcolor{blue}{1}  \\
+      \rowcolor{lightBlue}
+      0 & 0 & 1 & 1 & \textcolor{blue}{1} \\
+      0 & 1 & 0 & 0 & 0 \\
+      \rowcolor{lightBlue}
+      0 & 1 & 0 & 1 & \textcolor{blue}{1}  \\
+      0 & 1 & 1 & 0 & \textcolor{blue}{1}  \\
+      \rowcolor{lightBlue}
+      0 & 1 & 1 & 1 & \textcolor{blue}{1} \\
+      1 & 0 & 0 & 0 & \textcolor{blue}{1} \\
+      \rowcolor{lightBlue}
+      1 & 0 & 0 & 1 & \textcolor{blue}{1} \\
+      1 & 0 & 1 & 0 & \textcolor{blue}{1} \\
+      \rowcolor{lightBlue}
+      1 & 0 & 1 & 1 & 0 \\
+      1 & 1 & 0 & 0 & 0 \\
+      \rowcolor{lightBlue}
+      1 & 1 & 0 & 1 & 0 \\
+      1 & 1 & 1 & 0 & 0 \\
+      \rowcolor{lightBlue}
+      1 & 1 & 1 & 1 & 0 \\
+      \hline
+    \end{tabular}
+  \end{table}
+
+
+  \begin{center}
+      \tiny
+        \begin{karnaugh-map}[4][4][1][$B$][$A$][$D$][$C$]
+            \minterms{0, 2, 5, 6, 12, 13, 8, 9, 10}
+            \implicant{2}{6}
+            \implicantcorner
+            \implicant{12}{9}
+            \implicant{5}{13}
+        \end{karnaugh-map}
+  \end{center}
+
+
+  \paragraph{Karnaugh-map avec Don't Cares}
+  Les \textit{don't care} peuvent complexifier la simplifiation de la 
+  fontion à cause du plus grand nombre de \textbf{cas possibles}
+  lors du regroupement. 
 
 
 
+  \begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \setlength{\arrayrulewidth}{0.4pt}
+    \arrayrulecolor{blue}
+    \scriptsize
+    \begin{tabular}{|c|c|c|c||c|}
+      \hline
+      \rowcolor{lightBlue}
+      \textcolor{myb}{$A$} & \textcolor{myb}{$B$} & \textcolor{myb}{$C$} & \textcolor{myb}{$D$} & \textcolor{myb}{$Y$} 
+      \\ \hline
+      0 & 0 & 0 & 0 & \textcolor{blue}{1} \\
+      \rowcolor{lightBlue}
+      0 & 0 & 0 & 1 & 0 \\
+      0 & 0 & 1 & 0 &  \textcolor{blue}{1}  \\
+      \rowcolor{lightBlue}
+      0 & 0 & 1 & 1 & \textcolor{blue}{1} \\
+      0 & 1 & 0 & 0 & 0 \\
+      \rowcolor{lightBlue}
+      0 & 1 & 0 & 1 & \textcolor{red}{$\mathbb{X}$}    \\
+      0 & 1 & 1 & 0 & \textcolor{blue}{1}  \\
+      \rowcolor{lightBlue}
+      0 & 1 & 1 & 1 & \textcolor{blue}{1} \\
+      1 & 0 & 0 & 0 & \textcolor{blue}{1} \\
+      \rowcolor{lightBlue}
+      1 & 0 & 0 & 1 & \textcolor{blue}{1} \\
+      1 & 0 & 1 & 0 & \textcolor{blue}{1} \\
+      \rowcolor{lightBlue}
+      1 & 0 & 1 & 1 & \textcolor{red}{$\mathbb{X}$} \\
+      1 & 1 & 0 & 0 & \textcolor{red}{$\mathbb{X}$} \\
+      \rowcolor{lightBlue}
+      1 & 1 & 0 & 1 & \textcolor{red}{$\mathbb{X}$} \\
+      1 & 1 & 1 & 0 & \textcolor{red}{$\mathbb{X}$} \\
+      \rowcolor{lightBlue}
+      1 & 1 & 1 & 1 & \textcolor{red}{$\mathbb{X}$} \\
+      \hline
+    \end{tabular}
+  \end{table}
+
+  
 
 
+  
+  % paragraph  (end)
 
+
+  \begin{center}
+      \tiny
+        \begin{karnaugh-map}[4][4][1][$B$][$A$][$D$][$C$]
+            \minterms{0,2,6, 12, 13, 8,9}
+            \terms{3,5,7, 15, 14, 13, 10}{$\mathbb{X}$}
+            \implicantcorner
+            \implicant{3}{10}
+            \implicant{12}{10}
+        \end{karnaugh-map}
+  \end{center}
+
+  \[ Y = A + \overline{B} \cdot \overline{D} + C \]
+
+
+  \paragraph{Karnaugh-map de 5 entrées}
+  Il faut considérer \textbf{deux} K-map de \textbf{quatre} variables. Par convention, 
+  on peut omettre la première variable dans les deux K-map; on considère que la 
+  dans la première K-map, la variable irgnorée a une valeur de \textbf{0} et, dans la 2e K-map, 
+  elle a une valeur de \textbf{1}. 
+  \href{https://www.youtube.com/watch?v=CZPwYZdmMI0&t=417s}{\texttt{Exemple sur Youtube}} 
+  Soit la fonction et K-maps correspondantes :  
+  \begin{align*}
+    f(A, B, C, D, E) = &\sum(0, 1, 2, 4, 5, 6, 10, 13, 
+                    \\ &14 18, 21, 22, 24, 26, 29, 30)
+  \end{align*}
+
+
+  \begin{figure}[H]  
+    \caption*{\footnotesize{K-map de $BCDE$ en considérant $A = 0$}}
+    \begin{center}
+        \begin{karnaugh-map}[4][4][1][$C$][$B$][$E$][$D$]
+          \terms{0}{1\;\tiny{\textcolor{myp}{0}}}
+          \terms{1}{1\;\tiny{\textcolor{myp}{1}}}
+          \terms{4}{1\;\tiny{\textcolor{myp}{4}}}
+          \terms{5}{1\;\tiny{\textcolor{myp}{5}}}
+          \terms{7}{1\;\tiny{\textcolor{myp}{7}}}
+          \terms{8}{1\;\tiny{\textcolor{myp}{8}}}
+          \terms{9}{1\;\tiny{\textcolor{myp}{9}}}
+          \terms{10}{1\;\tiny{\textcolor{myp}{10}}}
+          \terms{11}{1\;\tiny{\textcolor{myp}{11}}}
+          \terms{2}{0\;\tiny{\textcolor{myp}{2}}}
+          \terms{3}{0\;\tiny{\textcolor{myp}{3}}}
+          \terms{6}{0\;\tiny{\textcolor{myp}{6}}}
+          \terms{12}{0\;\tiny{\textcolor{myp}{12}}}
+          \terms{13}{0\;\tiny{\textcolor{myp}{13}}}
+          \terms{14}{0\;\tiny{\textcolor{myp}{14}}}
+          \terms{15}{0\;\tiny{\textcolor{myp}{15}}}
+            \minterms{0, 1, 4, 5, 7, 8, 9, 11, 10}
+            \implicant{0}{5}
+            \implicant{5}{7}
+            \implicant{8}{10}
+        \end{karnaugh-map}    \end{center}
+  \end{figure}
+
+  \[ \textcolor{myyellow!50}{D\overline{E}} + \textcolor{green}{C\overline{D} \cdot E}   
+  + \textcolor{red}{\overline{A} \cdot \overline{B} \cdot \overline{D}}  \]
     
 
 
+   \begin{figure}[H]
+    \caption*{\footnotesize{K-map de $BCDE$ en considérant $A = 1$}}
+    \begin{center}
+    
+      \begin{karnaugh-map}[4][4][1][$C$][$B$][$E$][$D$]
+          \terms{0}{0\;\tiny{\textcolor{myp}{16}}}
+
+          \terms{1}{0\;\tiny{\textcolor{myp}{17}}}
+          
+          \terms{4}{0\;\tiny{\textcolor{myp}{20}}}
+          \terms{5}{1\;\tiny{\textcolor{myp}{21}}}
+          \terms{7}{1\;\tiny{\textcolor{myp}{23}}}
 
 
+          \terms{8}{1\;\tiny{\textcolor{myp}{24}}}
+          \terms{9}{1\;\tiny{\textcolor{myp}{25}}}
+          \terms{10}{1\;\tiny{\textcolor{myp}{26}}}
+          \terms{11}{1\;\tiny{\textcolor{myp}{27}}}
+          \terms{2}{0\;\tiny{\textcolor{myp}{18}}}
+          \terms{3}{0\;\tiny{\textcolor{myp}{19}}}
+          \terms{6}{0\;\tiny{\textcolor{myp}{22}}}
 
+          \terms{12}{0\;\tiny{\textcolor{myp}{28}}}
+          \terms{13}{0\;\tiny{\textcolor{myp}{29}}}
+          \terms{14}{0\;\tiny{\textcolor{myp}{28}}}
+          \terms{15}{0\;\tiny{\textcolor{myp}{31}}}
+            \minterms{2, 5, 7, 8, 9, 10, 11}
+            \implicantedge{2}{2}{10}{10}
+            \implicant{5}{7}
+            \implicant{8}{10}
+        \end{karnaugh-map}    \end{center}
+    \caption{}
+  \end{figure}
+
+
+  \[ \textcolor{myyellow!50}{D\overline{E}} + \textcolor{green}{C\overline{D} \cdot E}   
+  + \textcolor{red}{A B \cdot \overline{C}}  \]
+
+  \paragraph{Karnaugh-map de 6 entrées}
+  \mbox{}\vspace{0.5em}
+  \begin{note}{}{}
+        On peut utiliser la même approches que la méthode pour entrée, cette fois 
+        en considérant \textbf{4} K-map de 4 variables superposées dans un cube 
+        tridimensionnel
+        \href{https://www.youtube.com/watch?v=LXJXZOqZpGk}{Exemple sur \texttt{Youtube}}
+  \end{note}
     \paragraph{Multiplexeur}
     \begin{itemize}
         \item[$\rhd$]  $2^n$ lignes d'entrées 
