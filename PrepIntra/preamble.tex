@@ -8,6 +8,8 @@
 
 % Permet d'optimiser l'affichage de différents symboles et formules mathématiques
 \usepackage{amsmath,amsthm,mathtools}
+\usepackage[clock]{ifsym}
+\usepackage{karnaugh-map}
 
 \usepackage{svg}
 % Modifie l'apparence des nombre en mathmode et textmode
@@ -25,6 +27,39 @@
 \usepackage{balance}
 \usepackage{dirtree}
 \usepackage{titlesec}
+
+
+
+% Chapters and sections
+\usepackage{helvet}
+\titleformat{\chapter}
+  {\fontfamily{phv}\bfseries\huge} % format
+  {}                % label
+  {0pt}             % sep
+  {\color{myb}\huge}           % before-code
+
+
+
+\titleformat{\section}
+  {\normalfont\scshape}{\thesection}{1em}{}
+\usepackage{circuitikz}
+
+
+% Customizing the spacing for the chapter titles
+\titlespacing*{\chapter}{0pt}{0pt}{20pt}
+
+% Allow hfill in math environment
+\newcommand{\specialcell}[1]{\ifmeasuring@#1\else\omit$\displaystyle#1$\ignorespaces\fi}
+
+% Allow you to do the non implication (implication barred)
+\newcommand{\notimplies}{%
+  \mathrel{{\ooalign{\hidewidth$\not\phantom{=}$\hidewidth\cr$\implies$}}}}
+
+
+
+\DeclareRobustCommand{\looongrightarrow}{%
+  \DOTSB\relbar\joinrel\relbar\joinrel\relbar\joinrel\rightarrow
+}
 
 
 
@@ -86,6 +121,19 @@
     \addtocounter{page}{-1}
     \newpage
     }
+
+
+%=================== 
+% Comand for target symbol 
+
+\newcommand{\target}{%
+  \begin{tikzpicture}[scale=0.5]
+    \fill[black] (0,0) circle (0.1);
+    \draw (0,0) circle (0.2);
+    \draw (0,0) circle (0.3);
+  \end{tikzpicture}%
+}
+
 
 
 
@@ -1191,4 +1239,126 @@ segmentation style={solid, mytheoremfr},
 }
 {th}
 
+
+
+
+% Gates definitions 
+
+
+
+% Define the command for the NOT gate
+\newcommand{\notgate}{%
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw
+        (0,0) node[not port] (mynot) {}
+        (mynot.in) -- ++(-0.5,0) node[left] {A}
+        (mynot.out) -- ++(0.5,0) node[right] {Y};
+    \end{circuitikz}
+}
+
+
+\newcommand{\bufgate}{%
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw
+        (0,0) node[buffer port] (mynot) {}
+        (mynot.in) -- ++(-0.5,0) node[left] {A}
+        (mynot.out) -- ++(0.5,0) node[right] {Y};
+    \end{circuitikz}
+}
+
+
+
+\newcommand{\andgate}{%
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw
+        (0,0) node[and port] (myand) {}
+        (myand.in 1) -- ++(-0.5,0) node[left] {A}
+        (myand.in 2) -- ++(-0.5,0) node[left] {B}
+        (myand.out) -- ++(0.5,0) node[right] {Y};
+    \end{circuitikz}
+}
+
+
+% Define the command for the OR gate
+\newcommand{\orgate}{%
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw
+        (0,0) node[or port] (myor) {}
+        (myor.in 1) -- ++(-0.5,0) node[left] {A}
+        (myor.in 2) -- ++(-0.5,0) node[left] {B}
+        (myor.out) -- ++(0.5,0) node[right] {Y};
+    \end{circuitikz}
+}
+
+
+% Define the command for the XOR gate
+\newcommand{\xorgate}{%
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw
+        (0,0) node[xor port] (myxor) {}
+        (myxor.in 1) -- ++(-0.5,0) node[left] {A}
+        (myxor.in 2) -- ++(-0.5,0) node[left] {B}
+        (myxor.out) -- ++(0.5,0) node[right] {Y};
+    \end{circuitikz}
+}
+
+% Define the command for the NOR gate
+\newcommand{\norgate}{%
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw
+        (0,0) node[nor port] (mynor) {}
+        (mynor.in 1) -- ++(-0.5,0) node[left] {A}
+        (mynor.in 2) -- ++(-0.5,0) node[left] {B}
+        (mynor.out) -- ++(0.5,0) node[right] {Y};
+    \end{circuitikz}
+}
+
+% Define the command for the NAND gate
+\newcommand{\nandgate}{%
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw
+        (0,0) node[nand port] (mynand) {}
+        (mynand.in 1) -- ++(-0.5,0) node[left] {A}
+        (mynand.in 2) -- ++(-0.5,0) node[left] {B}
+        (mynand.out) -- ++(0.5,0) node[right] {Y};
+    \end{circuitikz}
+}
+
+% Define the command for the XNOR gate
+\newcommand{\xnorgate}{%
+\begin{circuitikz}[scale=0.8, transform shape]
+\draw
+(0,0) node[xnor port] (myxnor) {}
+(myxnor.in 1) -- ++(-0.5,0) node[left] {A}
+(myxnor.in 2) -- ++(-0.5,0) node[left] {B}
+(myxnor.out) -- ++(0.5,0) node[right] {Y};
+\end{circuitikz}
+}
+
+
+% Define the command for the 3-input NOR gate
+\newcommand{\northreegate}{%
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw
+        (0,0) node[nor port, number inputs=3] (mynor3) {}
+        (mynor3.in 1) -- ++(-0.5,0) node[left] {A}
+        (mynor3.in 2) -- ++(-0.5,0) node[left] {B}
+        (mynor3.in 3) -- ++(-0.5,0) node[left] {C}
+        (mynor3.out) -- ++(0.5,0) node[right] {Y};
+    \end{circuitikz}
+}
+
+
+% Define the command for the 3-input AND gate
+\newcommand{\andthreegate}{%
+\begin{circuitikz}[scale=0.8, transform shape]
+    \draw
+    (0,0) node[and port, number inputs=3] (myand3) {}
+    (myand3.in 1) -- ++(-0.5,0) node[left] {A}
+    (myand3.in 2) -- ++(-0.5,0) node[left] {B}
+    (myand3.in 3) -- ++(-0.5,0) node[left] {C}
+    (myand3.out) -- ++(0.5,0) node[right] {Y};
+\end{circuitikz}
+
+}
 

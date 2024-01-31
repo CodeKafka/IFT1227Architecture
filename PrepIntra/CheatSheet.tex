@@ -1,20 +1,16 @@
 \documentclass{report}
+\usepackage{multirow}
+\usepackage{array}
 \input{preamble.tex}
 \usepackage{circuitikz}
 \usepackage[scr]{rsfso}
-\usetikzlibrary{circuits.ee.IEC}
-\usetikzlibrary{arrows,shapes.gates.logic.US,shapes.gates.logic.IEC,calc}
-\newcommand{\faketarget}{\oplus\!\!\!\!\odot}
-\newcommand{\target}{%
-  \begin{tikzpicture}[scale=0.5]
-    \fill[black] (0,0) circle (0.1);
-    \draw (0,0) circle (0.2);
-    \draw (0,0) circle (0.3);
-  \end{tikzpicture}%
-}
 
-\usepackage[clock]{ifsym}
-\usepackage{karnaugh-map}
+%===============================
+\usetikzlibrary{circuits.ee.IEC}
+\usetikzlibrary{arrows,shapes.gates.logic.US,shapes.gates.logic.IEC,calc, positioning}
+\newcommand{\faketarget}{\oplus\!\!\!\!\odot}
+
+
 
 
 \title{\Huge{Architecture des ordinateurs}\\{IFT1227}\\{\textbf{Introduction}}}
@@ -22,154 +18,11 @@
 \date{\today}
 \lstset{inputencoding=utf8/latin1}
 
-            %%%%%%%%%%%%%%%%%  Sect.                          %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{helvet}
-\titleformat{\chapter}
-  {\fontfamily{phv}\bfseries\huge} % format
-  {}                % label
-  {0pt}             % sep
-  {\color{myb}\huge}           % before-code
+            %%%%%%%%%%%%%%%%%  Sect.       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
-\titleformat{\section}
-  {\normalfont\scshape}{\thesection}{1em}{}
-\usepackage{circuitikz}
 
-
-% Customizing the spacing for the chapter titles
-\titlespacing*{\chapter}{0pt}{0pt}{20pt}
-
-% Allow hfill in math environment
-\newcommand{\specialcell}[1]{\ifmeasuring@#1\else\omit$\displaystyle#1$\ignorespaces\fi}
-
-% Allow you to do the non implication (implication barred)
-\newcommand{\notimplies}{%
-  \mathrel{{\ooalign{\hidewidth$\not\phantom{=}$\hidewidth\cr$\implies$}}}}
-
-
-
-\DeclareRobustCommand{\looongrightarrow}{%
-  \DOTSB\relbar\joinrel\relbar\joinrel\relbar\joinrel\rightarrow
-}
-
-
-
-% Define the command for the NOT gate
-\newcommand{\notgate}{%
-    \begin{circuitikz}[scale=0.8, transform shape]
-        \draw
-        (0,0) node[not port] (mynot) {}
-        (mynot.in) -- ++(-0.5,0) node[left] {A}
-        (mynot.out) -- ++(0.5,0) node[right] {Y};
-    \end{circuitikz}
-}
-
-
-\newcommand{\bufgate}{%
-    \begin{circuitikz}[scale=0.8, transform shape]
-        \draw
-        (0,0) node[buffer port] (mynot) {}
-        (mynot.in) -- ++(-0.5,0) node[left] {A}
-        (mynot.out) -- ++(0.5,0) node[right] {Y};
-    \end{circuitikz}
-}
-
-
-
-\newcommand{\andgate}{%
-    \begin{circuitikz}[scale=0.8, transform shape]
-        \draw
-        (0,0) node[and port] (myand) {}
-        (myand.in 1) -- ++(-0.5,0) node[left] {A}
-        (myand.in 2) -- ++(-0.5,0) node[left] {B}
-        (myand.out) -- ++(0.5,0) node[right] {Y};
-    \end{circuitikz}
-}
-
-
-% Define the command for the OR gate
-\newcommand{\orgate}{%
-    \begin{circuitikz}[scale=0.8, transform shape]
-        \draw
-        (0,0) node[or port] (myor) {}
-        (myor.in 1) -- ++(-0.5,0) node[left] {A}
-        (myor.in 2) -- ++(-0.5,0) node[left] {B}
-        (myor.out) -- ++(0.5,0) node[right] {Y};
-    \end{circuitikz}
-}
-
-
-% Define the command for the XOR gate
-\newcommand{\xorgate}{%
-    \begin{circuitikz}[scale=0.8, transform shape]
-        \draw
-        (0,0) node[xor port] (myxor) {}
-        (myxor.in 1) -- ++(-0.5,0) node[left] {A}
-        (myxor.in 2) -- ++(-0.5,0) node[left] {B}
-        (myxor.out) -- ++(0.5,0) node[right] {Y};
-    \end{circuitikz}
-}
-
-% Define the command for the NOR gate
-\newcommand{\norgate}{%
-    \begin{circuitikz}[scale=0.8, transform shape]
-        \draw
-        (0,0) node[nor port] (mynor) {}
-        (mynor.in 1) -- ++(-0.5,0) node[left] {A}
-        (mynor.in 2) -- ++(-0.5,0) node[left] {B}
-        (mynor.out) -- ++(0.5,0) node[right] {Y};
-    \end{circuitikz}
-}
-
-% Define the command for the NAND gate
-\newcommand{\nandgate}{%
-    \begin{circuitikz}[scale=0.8, transform shape]
-        \draw
-        (0,0) node[nand port] (mynand) {}
-        (mynand.in 1) -- ++(-0.5,0) node[left] {A}
-        (mynand.in 2) -- ++(-0.5,0) node[left] {B}
-        (mynand.out) -- ++(0.5,0) node[right] {Y};
-    \end{circuitikz}
-}
-
-% Define the command for the XNOR gate
-\newcommand{\xnorgate}{%
-\begin{circuitikz}[scale=0.8, transform shape]
-\draw
-(0,0) node[xnor port] (myxnor) {}
-(myxnor.in 1) -- ++(-0.5,0) node[left] {A}
-(myxnor.in 2) -- ++(-0.5,0) node[left] {B}
-(myxnor.out) -- ++(0.5,0) node[right] {Y};
-\end{circuitikz}
-}
-
-
-% Define the command for the 3-input NOR gate
-\newcommand{\northreegate}{%
-    \begin{circuitikz}[scale=0.8, transform shape]
-        \draw
-        (0,0) node[nor port, number inputs=3] (mynor3) {}
-        (mynor3.in 1) -- ++(-0.5,0) node[left] {A}
-        (mynor3.in 2) -- ++(-0.5,0) node[left] {B}
-        (mynor3.in 3) -- ++(-0.5,0) node[left] {C}
-        (mynor3.out) -- ++(0.5,0) node[right] {Y};
-    \end{circuitikz}
-}
-
-
-% Define the command for the 3-input AND gate
-\newcommand{\andthreegate}{%
-\begin{circuitikz}[scale=0.8, transform shape]
-    \draw
-    (0,0) node[and port, number inputs=3] (myand3) {}
-    (myand3.in 1) -- ++(-0.5,0) node[left] {A}
-    (myand3.in 2) -- ++(-0.5,0) node[left] {B}
-    (myand3.in 3) -- ++(-0.5,0) node[left] {C}
-    (myand3.out) -- ++(0.5,0) node[right] {Y};
-\end{circuitikz}
-
-}
 
 
 
@@ -312,7 +165,7 @@
             \end{tabular}
             }
         \end{minipage}
-    \end{minipage}
+    \end{minipage} 
     \[\entouree{$Y = A \oplus B$} \]
     \columnbreak
 
@@ -1198,7 +1051,7 @@
   on peut omettre la première variable dans les deux K-map; on considère que la 
   dans la première K-map, la variable irgnorée a une valeur de \textbf{0} et, dans la 2e K-map, 
   elle a une valeur de \textbf{1}. 
-  \href{https://www.youtube.com/watch?v=CZPwYZdmMI0&t=417s}{\texttt{Exemple sur Youtube}} 
+  \href{https://www.youtube.com/watch?v=CZPwYZdmMI0&t=417s}{\texttt{Exemple sur Youtube}}. 
   Soit la fonction et K-maps correspondantes :  
   \begin{align*}
     f(A, B, C, D, E) = &\sum(0, 1, 2, 4, 5, 6, 10, 13, 
@@ -1286,12 +1139,517 @@
   \end{note}
     \paragraph{Multiplexeur}
     \begin{itemize}
-        \item[$\rhd$]  $2^n$ lignes d'entrées 
-        \item[$\rhd$]  $2^n$ N lignes de sélections 
-        \item[$\rhd$]  $2^n$ Une seule sorties $Y$  
+        \item[$\rhd$ ]  $2^n$ lignes d'entrées 
+        \item[$\rhd$ ]  $2^n$ N lignes de sélections 
+        \item[$\rhd$ ]  $2^n$ Une seule sorties $Y$  
     \end{itemize}
     Possède deux implémentations secondaires, soit (1) \textbf{portes logiques}
     et (2) \textbf{tampons} à trois états. 
-    \end{multicols*}
+    
 
+    \paragraph{Quine-McCluskey Method} 
+    Méthode tabulaire qui permet de réduire les expression \textbf{SOP}  
+
+
+    \begin{center}
+       \begin{tabular}{|c|c|c|c|c|c|}
+      \hline
+      \rowcolor{myg}
+       &  \textcolor{white}{A} & \textcolor{white}{B} & \textcolor{white}{C} &
+      \textcolor{white}{D} & \textcolor{white}{F}   \\
+      \hline
+      \textcolor{myb}{0} & 0 & 0 & 0 & 0 & \textcolor{myb}{$d$} \\
+      \rowcolor{myg!40} 1 & 0 & 0 & 0 & 1 & 1 \\
+      \textcolor{red}{2} & 0 & 0 & 1 & 0 & 0 \\
+      \rowcolor{myg!40} \textcolor{red}{3} & 0 & 0 & 1 & 1 & 1 \\
+      4 & 0 & 1 & 0 & 0 & 0 \\
+      \rowcolor{myg!40} \textcolor{red}{5} & 0 & 1 & 0 & 1 & 1 \\
+      \textcolor{red}{6} & 0 & 1 & 1 & 0 & 1 \\
+      \rowcolor{myg!40} \textcolor{red}{7} & 0 & 1 & 1 & 1 & 1 \\
+      8 & 1 & 0 & 0 & 0 & 0 \\
+      \rowcolor{myg!40} 9 & 1 & 0 & 0 & 1 & 0 \\
+      \textcolor{red}{10} & 1 & 0 & 1 & 0 & 1 \\
+      \rowcolor{myg!40} \textcolor{myb}{11} & 1 & 0 & 1 & 1 & \textcolor{myb}{$d$} \\
+      12 & 1 & 1 & 0 & 0 & 0 \\
+      \rowcolor{myg!40} \textcolor{red}{13} & 1 & 1 & 0 & 1 & 1 \\
+      14 & 1 & 1 & 1 & 0 & 0 \\
+      \rowcolor{myg!40} \textcolor{myb}{15} & 1 & 1 & 1 & 1 & \textcolor{myb}{$d$} \\
+      \hline 
+      \end{tabular}  
+    \end{center}
+
+  \begin{align*}
+    \textcolor{red}{\sum (1, 3, 5, 6, 7, 10, 13)} + \textcolor{myb}{\sum_{d} (0, 11, 15)}  
+  \end{align*}
+
+  \textbf{Formation du 1er tableau}
+  \begin{itemize}
+    \item [$\rhd$ ] Considérer les mintermes tels que $F \neq 0$ 
+    \item [$\rhd$ ] Grouper les mintermes : 
+      \begin{itemize}
+        \item [1.] Minterme contiennent aucun 1 
+        \item [2.] Mintermes contiennent un 1 
+        \item [ ] $\dots$ 
+        \item [4.] Minterme contient quatre 1 
+
+
+      \end{itemize}
+  \end{itemize}
+
+
+      \begin{center}
+          \begin{tabular}{c c c c}
+          \rowcolor{myg}
+          \textcolor{white}{A} & \textcolor{white}{B} & \textcolor{white}{C} & \textcolor{white}{D} \\
+          \hline
+          0 & 0 & 0 & 0 \\
+          \arrayrulecolor{red}
+          \hline
+          \rowcolor{myg!40}
+          0 & 0 & 0 & 1 \\
+          \hline
+          0 & 0 & 1 & 1 \\
+          \arrayrulecolor{myg}
+          0 & 1 & 0 & 1 \\
+          0 & 1 & 1 & 0 \\
+          1 & 0 & 1 & 0 \\
+          \arrayrulecolor{red}
+          \hline
+          \rowcolor{myg!40}
+          0 & 1 & 1 & 1 \\
+          \rowcolor{myg!40}
+          1 & 0 & 1 & 1 \\
+          \rowcolor{myg!40}
+          1 & 1 & 0 & 1 \\
+          \hline
+          1 & 1 & 1 & 1 \\ 
+          \arrayrulecolor{myg!40}
+          \end{tabular}  
+      \end{center} 
+
+
+  \textbf{Formation de la première tablea réduite}  
+  \begin{itemize}
+    \item [$\rhd$ ] Comparer les groupes adjacents. 
+    \item [$\rhd$ ] Trouver les termes qui diffèrent d'une valeur booléenne. 
+    \item [$\rhd$ ] Lorsqu'un différence de $1$ seul terme est trouvée, 
+      placer le terme réduit dans la nouvelle terme avec un \textbf{underscore} 
+      \texttt{"-"} à la position de la différence.    
+    \item [$\rhd$ ] Comparer chaque terme d'un groupe à chaque terme de 
+      son groupe adjacent. 
+  \end{itemize}
+
+
+      \begin{center}
+          \begin{tabular}{c c c c c}
+          \rowcolor{myg}
+          \textcolor{white}{A} & \textcolor{white}{B} & \textcolor{white}{C} & \textcolor{white}{D} & \\
+          \hline  
+          0 & 0 & 0 & \texttt{\_}  & * \\
+          \arrayrulecolor{red}
+          \hline
+          0 & 0 & \texttt{\_}   & 1 & \\
+          0 & \texttt{\_} & 0  & 1 & \\
+          \hline
+          0 & \texttt{\_}   & 1 & 1 & \\
+          \texttt{\_}   & 0 & 1 & 1 & \\
+          0 & 1 & \texttt{\_}   & 1 & \\
+          \texttt{\_}   & 1 & 0 & 1 & \\
+          0 & 1 & 1 & \texttt{\_}  & * \\
+          1 & 0 & 1 & \texttt{\_}   & * \\
+          \hline
+          \texttt{\_}   & 1 & 1 & 1 & \\ 
+          1 & \texttt{\_}   & 1 & 1 & \\ 
+          1 & 1 & \texttt{\_}   & 1 & \\ 
+          \end{tabular}  
+      \end{center} 
+
+      
+      \noindent \textbf{Formation de 2e tableau} \\ 
+      On continue la comparaison. Si pour un groupe donné, un terme ne peut pas 
+      être comparé avec \textit{aucun groupe adjacent}, il s'agit d'un implicant premier. 
+      Par exemple, le premier terme du tableau précédent ne peut être comparé 
+      avec aucun terme de du groupe qui lui est adjacent. 
+
+
+\begin{center}
+          \begin{tabular}{c c c c c}
+          \rowcolor{myg}
+          \textcolor{white}{A} & \textcolor{white}{B} & \textcolor{white}{C} & \textcolor{white}{D} &  \\
+          \hline  
+          0 & \texttt{\_} & \texttt{\_} & 1 &  * \\
+          \arrayrulecolor{red}
+          \hline
+          \texttt{\_}   & \texttt{\_}   & 1 & 1 &  *\\
+          \texttt{\_}   & 1 & \texttt{\_}  & 1 & * \\ 
+        \end{tabular}
+      \end{center} 
+
+
+\noindent\textbf{Formation de la table de choix}  
+    \begin{center}
+        \scalebox{0.75}{
+        \begin{tabular}{|c|c|c|c|c|c|c|c|}
+        \hline
+        \multirow{2}{*}{IP} & \multicolumn{7}{c|}{Minterms} \\ \cline{2-8} 
+        & 0001 & 0011 & 0101 & 0110 & 0111 & 1010 & 1101 \\ \hline
+        000-  & $\checkmark$ & & & & & & \\ \hline
+        011-   & & &  & \textcolor{black}{$\checkmark$}  & $\checkmark$ & & \\ \hline
+        101-   & & & & & & \textcolor{black}{$\checkmark$} & \\ \hline
+        0--1 & $\checkmark$ & $\checkmark$ & $\checkmark$ & & $\checkmark$ & & \\ \hline
+        --11 & & $\checkmark$ & & & $\checkmark$ & & \\ \hline
+        -1-1 & & & $\checkmark$ & & $\checkmark$ & & $\checkmark$ \\ \hline
+        \end{tabular}}
+    \end{center}
+
+    \noindent \textbf{Faire le choix}  \\ 
+    Considérer un implicant premier à la fois et  
+    cocher les mintermes qui sont couverts par l'implicant premier. 
+    Chercher ensuite les \textbf{colonnes} où il y a un seul cochet; l'implicant 
+    premier à cet endroit est donc un \textbf{implicant obligatoire}  
+
+
+    \begin{center}
+        \scalebox{0.75}{
+        \begin{tabular}{|c|c|c|c|c|c|c|c|}
+        \hline
+        \multirow{2}{*}{IP} & \multicolumn{7}{c|}{Minterms} \\ \cline{2-8} 
+        & 0001 & 0011 & 0101 & 0110 & 0111 & 1010 & 1101 \\ \hline
+        000\texttt{\_}  & $\checkmark$ & & & & & & \\ \hline
+        011\texttt{\_}\textcolor{red}{*}  & & &  & \textcolor{red}{$\checkmark$}  
+                                          & $\checkmark$ & & \\ \hline
+        101\texttt{\_}    \textcolor{red}{*} & & & & & & \textcolor{red}{$\checkmark$} & \\ \hline
+        0 \texttt{\_\_}1 & $\checkmark$ & $\checkmark$ & $\checkmark$ & & $\checkmark$ & & \\ \hline
+        \texttt{\_\_}11 & & $\checkmark$ & & & $\checkmark$ & & \\ \hline
+        \texttt{\_}1\texttt{\_}1 \textcolor{red}{*}  & & & $\checkmark$ & & $\checkmark$ & & \textcolor{red}{$\checkmark$} \\ \hline
+        \end{tabular}}
+    \end{center}
+    \noindent 
+    Regarder ensuite quels mintermes sont couvert pas les 
+    \textbf{implicant obligatoire}. Dans l'exemple donnée les 3 implicants obligatoire 
+    couvrent 5 des 7 mintermes. 
+
+    Parmi les implicants restants, il faut choisir la quantité minimale d'implicants 
+    premiers qui permettent de couvrir les mintermes restants. 
+
+
+
+    \begin{center}
+        \scalebox{0.75}{
+        \begin{tabular}{|c|c|c|c|c|c|c|c|}
+        \hline
+        \multirow{2}{*}{IP} & \multicolumn{2}{c|}{Minterms} \\ \cline{2-3} 
+        & 0001 & 0011 \\ \hline
+        000\texttt{\_}   & $\checkmark$ & \\ \hline
+        0 \texttt{\_\_}1   & \textcolor{red}{$\checkmark$}  
+                          & \textcolor{red}{$\checkmark$} \\ \hline
+        101\texttt{\_}  & & $\checkmark$ \\ \hline
+        \end{tabular}}
+    \end{center}
+
+    \noindent 
+    \textbf{Écrire l'équation finale}  
+    Considérer les implicants obligatoires trouvés et déduire la valeur des entrées 
+    formant la SOP en fonction du code de l'implicant obligatoire. 
+    \begin{align*}
+      f(A, B, C, D) &= \texttt{011\_ + 101\_ + \_1\_1 + \_1\_1} \\ 
+                    &= BC + A\overline{B}C + BD + \overline{A}D
+    \end{align*}
+
+    \paragraph{Multiplexeur MUX}
+    \begin{itemize}
+      \item [$\rhd$ ] Possède $2^n$ lignes d'entrée : $D_0, D_1, \dots, D_{2^n}$
+      \item [$\rhd$ ] Une seule sortie $Y$ 
+      \item[$\rhd$ ] \textbf{Rôle} : propager sur la sortie la valeur de l'une des $2^n$ entrées.   
+    \end{itemize}
+
+
+    \begin{table}[H]
+      \begin{center}
+        \renewcommand{\arraystretch}{1.15}
+        \fontfamily{flr}\selectfont
+        \footnotesize
+            \begin{tabular}{l l l |l}
+            \arrayrulecolor{blue}\hline
+            \rowcolor{lightBlue}
+            \textcolor{myb}{S} & \textcolor{myb}{$D_0$} &  
+            \textcolor{myb}{$D_1$} & \textcolor{myb}{$Y$}
+            \\
+            \hline
+            \arrayrulecolor{black}
+            0 & 0 & 0 & 0 
+            \\
+            \hline
+            0 & 0 & 1 & 1   
+            \\
+            \hline
+            0 & 1 & 0 & 0 
+            \\ 
+            \hline 
+            0 & 1 & 1 & 1   
+            \\ 
+            \hline 
+              1 & 0 & 0 & 0 
+            \\ 
+            \hline           
+             1 & 0 & 1 & 0 
+            \\ 
+            \hline            
+            1 & 1 & 0 & 1 
+            \\ 
+            \hline 
+            1 & 1 & 1 & 1 
+            \\ 
+            \hline 
+                \end{tabular}
+    \end{center}
+    \end{table}
+
+    \begin{center}
+        \begin{karnaugh-map}[4][2][1][$D_1D_0$][$S$]
+            \minterms{2, 3, 5, 7}
+            \implicant{3}{2}
+            \implicant{5}{7}
+        \end{karnaugh-map} 
+    \end{center}
+
+    \[ Y = D_0\overline{S} + D_1S \] 
+
+
+    \begin{figure}[H]
+      \begin{center}
+        \includegraphics[width=0.15\textwidth]{ImplemMUX.png}
+      \end{center}
+    \end{figure}
+
+    \noindent\textbf{Logique en utilisant MUX} \\   
+    Soit une \textit{fonction logique} $f(A, B...)$   
+    dépendant de $2^n$ entrées, on peut utiliser un MUX pour 
+    repréter cette fonction.  
+
+
+    \begin{table}[H]
+      \begin{center}
+        \renewcommand{\arraystretch}{1.15}
+        \fontfamily{flr}\selectfont
+        \footnotesize
+            \begin{tabular}{l l|l}
+            \arrayrulecolor{blue}\hline
+            \rowcolor{lightBlue}
+            \textcolor{myb}{A} & \textcolor{myb}{B} & 
+            \textcolor{myb}{Y}  
+            \\
+            \hline
+            \arrayrulecolor{black}
+            0 & 0 & 0 
+            \\
+            \hline
+            0 & 1 & 0  
+            \\
+            \hline
+            1 & 0 & 0
+            \\ 
+            \hline 
+            1 & 1 & 1 
+            \\
+            \hline
+                \end{tabular}
+    \end{center}
+    \end{table}
+
+
+    \begin{figure}[H]
+      \begin{center}
+        \includegraphics[width=0.15\textwidth]{MUXExemple.png}
+      \end{center}
+    \end{figure}
+
+    \begin{note}{}{}
+      Sur les schéma de circuit, le \textbf{triangle} $\rhd$ représent la valeur source $0$ 
+        et la \textbf{barrre} est $1$  
+    \end{note}
+
+    \noindent \textbf{Réduction de la taile de MUX}  
+    \begin{figure}[H]
+      \begin{center}
+        \includegraphics[width=0.28\textwidth]{ReductionMUX.png}
+      \end{center}
+    \end{figure} 
+
+    \paragraph{Décodeur}
+    \begin{itemize}
+      \item [$\rhd$ ] Possède $N$ entrées et $2^N$ sorties 
+      \item [$\rhd$ ] Les sorties expriment \textit{combinaisons binaires} possibles des E.    
+     
+    \end{itemize}
+
+
+    \begin{table}[H]
+
+      \begin{center}
+        \renewcommand{\arraystretch}{1.5}
+        \fontfamily{flr}\selectfont
+        \footnotesize
+            \begin{tabular}{l l l l l l}
+            \arrayrulecolor{blue}\hline
+            \rowcolor{lightBlue}
+            \textcolor{myb}{$A_1$} & \textcolor{myb}{$A_0$} &
+            \textcolor{myb}{$Y_3$} & \textcolor{myb}{$Y_2$} &
+            \textcolor{myb}{$Y_1$} & \textcolor{myb}{$Y_0$} 
+            \\
+            \hline
+            \arrayrulecolor{black}
+            0 & 0 & 0 & 0 & 0 & \textcolor{red}{1}  
+            \\
+            \hline
+            0 & 1 & 0 & 0 & \textcolor{red}{1} & 0
+            \\
+            \hline
+            1 & 0 & 0 & \textcolor{red}{1} & 0 & 0
+            \\
+            \hline
+            1 & 1 & \textcolor{red}{1} & 0 & 0 & 0
+            \\
+            \hline
+                \end{tabular}
+    \end{center}
+    \end{table}
+    \noindent \textbf{Implémentation de décodeur}  
+
+
+    \begin{center}
+    \begin{tikzpicture}
+        % Draw the box for the decoder
+        \draw (0,0) rectangle (3,4);
+        \node at (1.5,2) {Décodeur $2 \colon 4$ };
+
+        % Draw input lines and labels
+        \draw (-1,3.5) -- (0,3.5) node[at start, left] {$A_1$};
+        \draw (-1,2.5) -- (0,2.5) node[at start, left] {$A_0$};
+
+        % Draw output lines and labels
+        \draw (3,3) -- (4,3) node[at end, right] {$Y_3$};
+        \draw (3,2.5) -- (4,2.5) node[at end, right] {$Y_2$};
+        \draw (3,1.5) -- (4,1.5) node[at end, right] {$Y_1$};
+        \draw (3,1) -- (4,1) node[at end, right] {$Y_0$};
+
+        % Draw the binary numbers next to output lines
+        \node at (3.5,3) [red, anchor=south] {11};
+        \node at (3.5,2.5) [red, anchor=south] {10};
+        \node at (3.5,1.5) [red, anchor=south] {01};
+        \node at (3.5,1) [red, anchor=south] {00};
+    \end{tikzpicture}
+    \end{center}
+
+
+
+    \begin{figure}[H]
+      \begin{center}
+        \includegraphics[width=0.20\textwidth]{ImplementationDecodeur.png}
+      \end{center}
+    \end{figure}
+
+    \paragraph{Caractéristiques électriques et tempo.}
+    Les changements $0 \rightarrow 1$ ou $1 \rightarrow 0$ \textbf{ne sont pas}  
+    immédiat. Par exemple, s'il y a une porte tampons qui 
+    propage la valeur d'une entrée $A$, il y a un délais 
+    pour que $Y$ passe de l'état précédent au nouvel état acuel 
+    de $A$. 
+
+    \noindent \textbf{Détails de propagation $t_{pd}$}  
+    Délais maximal; il est évalué du premier changement de l'entrée 
+    jusqu'à la \textit{stabilisation} de la sortie.   
+
+
+   \noindent \textbf{Détails de contamination$t_{cd}$}  
+   Délais minimum; il provient du premier changement de l'entrée 
+   jusqu'au premier changement de la sortie. 
+
+
+   \noindent \textbf{Chemin critique}  
+   Chemin le plus long pour que la propagation \textbf{totale} s'effectue. Pour le 
+   calculer, il faut additionner les $t_{pd}$ des portes impliquant 
+   le plus long chemin. 
+
+
+   \noindent \textbf{Chemin court}  
+   Chemin le plus court engendrant une contamination. Pour le 
+   calculer, il faut additionner les $t_{cd}$ des portes impliquant 
+   le plus court chemin. 
+
+
+   \begin{figure}[H]
+    \begin{center}
+      \includegraphics[width=0.25\textwidth]{Glitch.png}
+    \end{center}
+   \end{figure}
+
+
+   \paragraph{Aléas}
+   Se produit lorsque des transitions \textit{non prévues} par 
+   la fonction booléenne apparaissent suite à une variation 
+   du vecteur d'E. 
+
+
+   \paragraph{Exemple de glitch}
+   Puisque le chemin le plus court pour l'entrée $B$ 
+   est la 2e porte $\mathbb{ET}$, lorsque $B$ 
+   transitionne, on a  $B \colon 1 \rightarrow 0$,
+   $1(C)^0(B) \rightarrow 0$. Lors que la porte 
+   ou est temporairement dans l'état $0$, on a 
+   $0^0 \rightarrow \textcolor{gray}{0}$.   
+
+
+   \begin{figure}[H]
+    \begin{center}
+      \includegraphics[width=0.35\textwidth]{ExempleGlitch.png}
+    \end{center}
+   \end{figure}
+
+   \paragraph{Horloge}
+   Les signaux ne se trouve pas toujours dans leur 
+   \textit{état valide}, à cause des délais de montée, descente 
+   et propagation. Pour éviter les aléas, on impose au 
+   système de lire les valeurs à des \textbf{instants précis}  
+   et à des intervales réguliers. 
+
+   L'intervale de temps entre deux impulsions régulières 
+   est le \textit{temps de cycle} ou \textit{période d'horloge}    
+
+
+   \begin{figure}[H]
+    \begin{center}
+      \includegraphics[width=0.13\textwidth]{ExempleHorloge.png}
+    \end{center}
+   \end{figure}
+   
+   
+
+
+   
+
+
+
+
+
+
+
+  
+
+    
+
+    
+    
+
+
+
+
+
+
+
+    \end{multicols*}
 \end{document}
+
+
+
+
