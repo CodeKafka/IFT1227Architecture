@@ -4,11 +4,58 @@
 \input{preamble.tex}
 \usepackage{circuitikz}
 \usepackage[scr]{rsfso}
+\usepackage{microtype}
+
 
 %===============================
 \usetikzlibrary{circuits.ee.IEC}
 \usetikzlibrary{arrows,shapes.gates.logic.US,shapes.gates.logic.IEC,calc, positioning}
 \newcommand{\faketarget}{\oplus\!\!\!\!\odot}
+
+
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\color{black}}
+  {\filleft%
+    \begin{tikzpicture}
+    \node[
+      outer sep=0pt,
+      text width=1.5cm,
+      minimum height=2cm,
+      fill=draculawhite-background,
+      font=\color{black}\fontsize{40}{50}\selectfont,
+      align=center
+      ] (num) {\thechapter};
+    \node[
+      rotate=90,
+      anchor=south,
+      font=\color{black}\Large\normalfont
+      ] at ([xshift=-5pt]num.west) {\textls[180]{\textsc{\textit{Section}}}};  
+    \end{tikzpicture}%
+  }
+  {5pt}
+  {\titlerule[2.0pt]\vskip3pt\titlerule\vskip4pt\large\normalfont}
+
+
+
+\titleformat{\section}
+  {\normalfont\scshape}{\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\normalfont\scshape}{\thesubsection}{1em}{}
+
+
+% Customizing the spacing for the chapter titles
+\titlespacing*{\chapter}{0pt}{0pt}{20pt}
+
+
+
+\DeclareRobustCommand{\looongrightarrow}{%
+  \DOTSB\relbar\joinrel\relbar\joinrel\relbar\joinrel\rightarrow
+}
+
+
+\DeclareMathOperator{\di}{d\!}
+\newcommand*\Eval[3]{\left.#1\right\rvert_{#2}^{#3}}
 
 
 
@@ -36,6 +83,7 @@
 
 
     \footnotesize
+    \chapter{Circuits logiques}
 
 
     \paragraph{Couche logique numérique}  
@@ -167,7 +215,6 @@
         \end{minipage}
     \end{minipage} 
     \[\entouree{$Y = A \oplus B$} \]
-    \columnbreak
 
 
 
@@ -1622,6 +1669,112 @@
       \includegraphics[width=0.13\textwidth]{ExempleHorloge.png}
     \end{center}
    \end{figure}
+
+   \chapter{Circuits séquentiels}
+
+   \paragraph{Principe}
+   En plus de l'état des entrées, les circuits 
+   logiques considèrent aussi les 
+   \textit{information précédemment traitées}; 
+   ils possèdent donc une mémoire. 
+
+
+   \begin{figure}[H]
+    \begin{center}
+      \includegraphics[width=0.35\textwidth]{exCircsequentiel.png}
+    \end{center}
+    \caption{Sortie réinjectée dans porte entrée}
+   \end{figure}
+
+
+   \paragraph{Circuit bistable}
+   Possède deux inverseurs et \textbf{aucune entrée} 
+
+   \begin{figure}[H]
+    \begin{center}
+      \includegraphics[width=0.25\textwidth]{CirBistable.png}
+    \end{center}
+   \end{figure}
+
+   \paragraph{Latch S/R}
+   Application d'un circuit bistable contenant 
+   additionnelement deux portes $\mathbb{OU}$ 
+   et deux entrées $R$ et $S$. En pratique, le 
+   Latch \textit{Set Reset} stocke un bit d'état 
+   $Q$ et contrôle ce bit par les entrée 
+   $S$. Lors de l'étape \textit{Set}, 
+   on a $S = 1, R = 0, Q =1 $. Lors de l'étape 
+   \textit{Reset}, on a 
+   $S = 0, R = 1, Q = 0$. 
+
+
+   \begin{figure}[H]
+    \begin{center}
+      \includegraphics[width=0.15\textwidth]{Latch1.png}
+    \end{center}
+    \caption{\tiny$(R = 0)\land(S = 1) \implies (Q = 1) 
+    \land(\overline{Q} = 0)$}
+   \end{figure}
+
+
+   \begin{figure}[H]
+    \begin{center}
+      \includegraphics[width=0.15\textwidth]{Latch2.png}
+    \end{center}
+    \caption{\tiny$(R = 1)\land(S = 0) \implies (Q = 0) 
+    \land(\overline{Q} = 1)$}
+   \end{figure}
+
+   Lorsque $S$ et $R$ ont pour valeur \textbf{0}, 
+   il y a formation de mémoire. Pour un cycle on 
+   obtient $Q_{prev} = 0$, pour le cycle suivant 
+   on obtient $Q_{prev} = 1$
+
+   \begin{figure}[H]
+    \begin{center}
+      \includegraphics[width=0.25\textwidth]{Latch3.png}
+    \end{center}
+    \caption{
+        \tiny$(R = 0)\land(S = 0) \implies (Q_{prev} = 0$)} 
+   \end{figure}
+
+
+   Lorsque $R$ et $S$ on pour valeur \textbf{1}, 
+   il y a une incohérence; $Q = \overline{Q}$. 
+
+
+   \begin{figure}[H]
+    \begin{center}
+      \includegraphics[width=0.15\textwidth]{Latch4.png}
+    \end{center}
+    \caption{
+        \tiny$(R = 0)\land(S = 0) \implies (Q_{prev} = 0$)} 
+   \end{figure}
+
+
+   \paragraph{Verrou D}
+
+  
+   Circuit dans lequel la valeur de $CLK$ contrôle 
+   la valeur propagée par l'entrée $D$. Lorsque 
+   le $CLK$ a une valeur de \textbf{0} la 
+   valeur de $Q$ varie, indépendamment de 
+   $D$. Lorsque la valeur de $CLK$ est \textbf{1}  
+   la valeur de $D$ est propagée. 
+   okkqwkboo
+
+   \begin{figure}[H]
+    \begin{center}
+      \includegraphics[width=0.25\textwidth]{LatchD.png}
+    \end{center}
+    \caption{}
+   \end{figure}
+   
+   
+   
+
+   
+
    
    
 
