@@ -1752,7 +1752,7 @@
    \end{figure}
 
 
-   \paragraph{Verrou D}
+   \paragraph{Verrou $D$ }
 
   
    Circuit dans lequel la valeur de $CLK$ contrôle 
@@ -1769,6 +1769,118 @@
     \end{center}
     \caption{}
    \end{figure}
+
+
+   \paragraph{Bascule $D$}
+   Circuit dans lequel $D$ est propagé sur le front 
+   montant de l'horloge $CLK$. Lorqque $CLK$ passe 
+   de \textbf{0} à \textbf{1}, $D$ est propagé 
+   vers $Q$. Autrement, $Q$ préserve sa valeur précédente. 
+
+   \begin{figure}[H]
+    \begin{center}
+      \includegraphics[width=0.25\textwidth]{BasculeD.png}
+    \end{center}
+   \end{figure}
+
+   \begin{figure}[H]
+    \begin{center}
+      \includegraphics[width=0.25\textwidth]{VerrouBasculeComparaison.png}
+    \end{center}
+    \caption{Comparaison Verrou D et Bascule D}
+   \end{figure}
+
+   \paragraph{Registre}
+    Ils sont composés de bascules. Chaque bascule a un index et la taille 
+    du bus de bascule est spécifiée. 
+    \begin{itemize}
+      \item [$\rhd$ ] Registre $3:0$ possède $4$ bascules.
+    \end{itemize} 
+
+    \begin{figure}[H]
+      \begin{center}
+        \includegraphics[width=0.15\textwidth]{RegistreExemple.png}
+      \end{center}
+    \end{figure}
+
+
+    \begin{figure}[H]
+      \begin{center}
+        \includegraphics[width=0.15\textwidth]{4Bascules}
+      \end{center}
+    \end{figure}
+
+
+    \paragraph{Bascule $D$ avec \texttt{Enable}}
+    On ajout un signal \texttt{enable}. Est implémenté en ajoutant un MUX 2:1 
+    \begin{itemize}
+      \item [$\rhd$ ] \texttt{enable} = 1 : $D$ passe vers $Q$ au fron montant $CLK$  
+      \item [$\rhd$ ] \texttt{enable} = 0 : Bascule retient sa valeur précédente; 
+        l'ancien $Q$ deeure.
+    \end{itemize}
+    Sert à mémoriser l'information de $Q$ durant plusieurs cyles d'horloge. 
+
+
+    \begin{figure}[H]
+      \begin{center}
+        \includegraphics[width=0.28\textwidth]{BasculeDEnable.png}
+      \end{center}
+    \end{figure}
+
+
+    \paragraph{Bascule $D$ avec \texttt{reset}}
+    On ajout un signal \texttt{reset}. 
+    \begin{itemize}
+      \item [$\rhd$ ] \texttt{reset} = 1 : $Q$ est fixé à $0$ 
+      \item [$\rhd$ ] \texttt{reset} = 1 : Fonctionne comme une bascule 
+        $D$ normale
+    \end{itemize}
+    Peut être synchrone (fixe $Q = 0$ à condition que 
+    \texttt{reset = 1} \textbf{et} $CLK = 1$ front montant) ou 
+    asynchrone (fixe $Q = 0$ pour \texttt{reset} = 1, 
+    indépendamment de $CLK$. 
+
+
+    \begin{figure}[H]
+      \begin{center}
+        \includegraphics[width=0.2\textwidth]{BasculeDReset.png}
+      \end{center}
+    \end{figure}
+
+
+    \paragraph{Bascule $D$ avec \texttt{set}  }
+    On ajout un signal \texttt{set}. 
+    \begin{itemize}
+      \item [$\rhd$ ] \texttt{set} = 1 : $Q$ est fixé à $1$ 
+      \item [$\rhd$ ] \texttt{set} = 0 : Fonctionne comme une bascule 
+        $D$ normale
+    \end{itemize}
+
+
+    \begin{figure}[H]
+      \begin{center}
+        \includegraphics[width=0.2\textwidth]{BasculeDSet.png}
+      \end{center}
+    \end{figure}
+
+    \paragraph{Automate fini}
+    Il s'agit de la \textbf{base théorique} des circuits séquentiels  
+    Possède un nombre fini d'\textbf{états}. Pour u coupe d'instants 
+    (\texttt{t}, \texttt{t+1}), il possède une réponse $S$, un entre 
+    $E$ et un état $Q$. 
+    
+
+
+
+    
+
+
+
+    
+    
+    
+   
+   
    
    
    
